@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<form method="post" action="/resultado">
+    <div class="mb-3">
+        <label for="numero1" class="form-label">Numero 1</label>
+        <input type="number" class="form-control" id="numero1" name="numero1" required>
+    </div>
+    <div class="mb-3">
+        <label for="numero2" class="form-label">Numero 2</label>
+        <input type="number" class="form-control" id="numero2" name="numero2" required>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Calcular</button></button>
+</form>
+
+{% endblock %}   
