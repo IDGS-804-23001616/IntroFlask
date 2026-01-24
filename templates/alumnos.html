@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% import '_macro.html' as macro %}
+
+<form method="post" action="" novalidate>
+    {{ form.csrf_token() }}
+    <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+    {{ macro.camposNuevos(form.matricula) }}
+    {{ macro.camposNuevos(form.nombre) }}
+    {{ macro.camposNuevos(form.apellido) }}
+    {{ macro.camposNuevos(form.correo) }}
+
+    <input type="submit" name="btn" value="Guardar" class="btn btn-primary">
+</form>
+
+<h2>Matricula: {{matricula}}</h2>
+<h2>Nombre: {{nombre}}</h2>
+<h2>Apellido: {{apellido}}</h2>
+<h2>Correo: {{correo}}</h2>
+{% endblock %}

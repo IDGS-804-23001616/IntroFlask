@@ -1,6 +1,12 @@
 from flask import Flask, render_template, request
+import forms
+from flask_wtf.csrf import CSRFProtect
 import math
+
 app = Flask(__name__)
+app.secret_key = 'clave_secreta'
+csfr=CSRFProtect()
+
 
 @app.route('/')
 def index():
@@ -71,21 +77,20 @@ def operasBase():
     resultado = None
 
     if request.method == 'POST':
-        n1 = request.form.get('numero1')
-        n2 = request.form.get('numero2')
-        
-        
-        if request.form == 'suma':
-            resultado = float(n1) + float(n2)
-        elif request.form == 'resta':
-            resultado = float(n1) - float(n2)
-        elif request.form == 'multiplicacion':
-            resultado = float(n1) * float(n2)
-        elif request.form == 'division':
-            resultado = float(n1) / float(n2)
-            
-    return render_template('operasBase.html', resultado=resultado, n1=n1, n2=n2)
+        n1 = float(request.form.get('numero1'))
+        n2 = float(request.form.get('numero2'))
+        operacion = request.form.get('operacion')
 
+        if operacion == 'suma':
+            resultado = n1 + n2
+        elif operacion == 'resta':
+            resultado = n1 - n2
+        elif operacion == 'multiplicacion':
+            resultado = n1 * n2
+        elif operacion == 'division':
+            resultado = n1 / n2 if n2 != 0 else "No se puede dividir entre 0"
+
+    return render_template('operasBase.html', resultado=resultado)
 
 @app.route('/resultado', methods=['POST'])
 def resultado():
@@ -106,8 +111,22 @@ def distancia():
 
     return render_template('distancia.html', resultado=resultado)
 
-
+@app.route('/alumnos', methods=['GET', 'POST'])
+def alumnos():
+    matricula = 0
+    nombre = ''
+    apellido = ''
+    correo = ''
+    alumno_class=forms.UserForm(request.form)
+    if request.method == 'POST' and alumno_class.validate():
+        matricula = alumno_class.matricula.data
+        nombre = alumno_class.nombre.data
+        apellido = alumno_class.apellido.data
+        correo = alumno_class.correo.data
+    return render_template('alumnos.html', form=alumno_class, matricula=matricula, nombre=nombre, apellido=apellido, correo=correo)
+                          
 if __name__ == '__main__':
+    csfr.init_app(app)
     app.run(debug=True)
     
     
