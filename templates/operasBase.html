@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-<form method="post" action="/resultado">
+<form method="post" action="/operasBase">
     <div class="mb-3">
         <label for="numero1" class="form-label">Numero 1</label>
         <input type="number" class="form-control" id="numero1" name="numero1" required>
@@ -10,8 +10,38 @@
         <label for="numero2" class="form-label">Numero 2</label>
         <input type="number" class="form-control" id="numero2" name="numero2" required>
     </div>
-    
-    <button type="submit" class="btn btn-primary">Calcular</button></button>
+
+    <div class="mb-3">
+        <label for="operacion" class="form-label">Operacion</label>
+        </label>
+
+        <div class="form-check">
+
+            <input class="form-check-input" type="radio" name="operacion" id="suma" value="suma" required>
+            <label class="form-check-label" for="suma">Suma</label>
+        </div>
+
+        <div class="form-check">
+
+            <input class="form-check-input" type="radio" name="operacion" id="resta" value="resta" required>
+            <label class="form-check-label" for="resta">Resta</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="operacion" id="multiplicacion" value="multiplicacion"
+                required>
+            <label class="form-check-label" for="multiplicacion">Multiplicación</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="operacion" id="division" value="division" required>
+            <label class="form-check-label" for="division">División</label>
+        </div>
+
+        <br>
+        <button type="submit" class="btn btn-primary">Calcular</button>
 </form>
 
-{% endblock %}   
+
+<h1>Resultado: {{resultado}}</h1>
+{% endblock %}

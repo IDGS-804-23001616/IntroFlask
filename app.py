@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import math
 app = Flask(__name__)
 
 @app.route('/')
@@ -65,16 +66,49 @@ def operas():
         </form>
 '''
 
-@app.route('/operasBase')
-def Operasas():
-    return render_template('operasBase.html')
+@app.route('/operasBase', methods=['GET', 'POST'])
+def operasBase():
+    resultado = None
+
+    if request.method == 'POST':
+        n1 = request.form.get('numero1')
+        n2 = request.form.get('numero2')
+        
+        
+        if request.form == 'suma':
+            resultado = float(n1) + float(n2)
+        elif request.form == 'resta':
+            resultado = float(n1) - float(n2)
+        elif request.form == 'multiplicacion':
+            resultado = float(n1) * float(n2)
+        elif request.form == 'division':
+            resultado = float(n1) / float(n2)
+            
+    return render_template('operasBase.html', resultado=resultado, n1=n1, n2=n2)
 
 
-@app.route('/resultado', methods=['GET'])
+@app.route('/resultado', methods=['POST'])
 def resultado():
-    n1 = request.args.get('numero1')
-    n2 = request.args.get('numero2')
+    n1 = request.form.get('numero1')
+    n2 = request.form.get('numero2')
     return f'<h1>La suma es: {float(n1) + float(n2)}</h1>'
+
+
+@app.route('/distancia', methods=['GET', 'POST'])
+def distancia():
+    resultado = None
+    if request.method == 'POST':
+        x1 = float(request.form.get('x1'))
+        y1 = float(request.form.get('y1'))
+        x2 = float(request.form.get('x2'))
+        y2 = float(request.form.get('y2'))
+        resultado = math.sqrt((x2 - x1)**2+(y2 - y1)**2)
+
+    return render_template('distancia.html', resultado=resultado)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+    
+

@@ -1,6 +1,17 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <h1>Hola desde saludo 1  :v <[:D</h1></h1>
+{% import '_macros.html' as macros %}
+
+<form method="post" action="">
 
 
-{% endblock %}   
+    {{macros.datos('nombre','Escribe tu Nombre')}}
+    {{macros.datos('edad','Escribe tu edad','number')}}
+    {{macros.datos('correo','Escribe tu correo','email')}}
+    {{macros.datos('password','Escribe tu contraseña','password')}}
+
+
+</form>
+
+
+{% endblock %}

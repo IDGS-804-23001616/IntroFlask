@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% import '_macros.html' as macros %}
+
+<form method="post" action="/distancia">
+
+    {{macros.datos('x1','Escribe un numero x1','number')}}
+    {{macros.datos('x2','Escribe un numero x2','number')}}
+    {{macros.datos('y1','Escribe un numero y1','number')}}
+    {{macros.datos('y2','Escribe un numero y2','number')}}
+
+    <button type="submit" class="btn btn-primary">Calcular</button>
+
+
+</form>
+<br>
+<h1>La distancia entre dos puntos es: {{resultado}}</h1>
+{% endblock %}
