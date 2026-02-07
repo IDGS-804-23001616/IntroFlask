@@ -1,0 +1,59 @@
+{% block content %}
+{% import '_macros.html' as macros %}
+
+<link rel="stylesheet" href="{{(url_for('static', filename='bootstrap/css/bootstrap.min.css')) }}"> 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cine.css') }}">
+
+
+<div class="container mt-4">
+    <h3 class="text-center mb-4">Cinépolis</h3>
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header">
+                    Entradas
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        {{ macros.cine(form.nombre, "Nombre del cliente") }}
+                        {{ macros.cine(form.compradores, "Cantidad de compradores", "number") }}
+                        {{ macros.cine_radio(form.cineco) }}
+                        {{ macros.cine(form.boletos, "Cantidad de boletas", "number") }}
+                        <div class="text-center mt-3">
+                            <button type="submit" name="accion" value="procesar" class="btn btn-primary">
+                                Procesar
+                            </button>
+                            <button type="submit" name="accion" value="salir" class="btn btn-secondary">
+                                Salir
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+        </div>
+        <br>
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    Salidas
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Valor a pagar</label>
+                        <input type="text" class="form-control" value="{{ valor_pagar }}" readonly>
+                    </div>
+
+                    {% if mensaje %}
+                    <div class="alert alert-info">
+                        {{ mensaje }}
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

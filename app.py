@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request
 import forms
-from flask_wtf.csrf import CSRFProtect
 import math
+from flask_wtf.csrf import CSRFProtect
+
 
 app = Flask(__name__)
-app.secret_key = 'clave_secreta'
-csfr=CSRFProtect()
+app.config["SECRET_KEY"] = "clave_secreta"
+
+csrf = CSRFProtect(app)
 
 
 @app.route('/')
@@ -124,9 +126,44 @@ def alumnos():
         apellido = alumno_class.apellido.data
         correo = alumno_class.correo.data
     return render_template('alumnos.html', form=alumno_class, matricula=matricula, nombre=nombre, apellido=apellido, correo=correo)
-                          
+
+@app.route("/cinepolis", methods=["GET", "POST"])
+def cinepolis():
+    form = forms.CinepolisForm(request.form)
+    valor_pagar = ""
+    mensaje = ""
+    if request.method == "POST":
+        accion = request.form.get("accion", "")
+        if accion == "salir":
+            return render_template("cinepolis.html",form=form,valor_pagar="",mensaje="")
+        if form.validate():
+            nombre = form.nombre.data.strip()
+            compradores = int(form.compradores.data)
+            boletos = int(form.boletos.data)
+            cineco = form.cineco.data 
+            max_boletos = compradores * 7
+            if boletos > max_boletos:
+                mensaje = f"No puedes comprar más de 7 boletos por persona. Máximo para comprar: {max_boletos}."
+            else:
+                precio_boleto = 12000
+                subtotal = boletos * precio_boleto
+                if boletos > 5:
+                    desc = 0.15
+                elif boletos in (3, 4, 5):
+                    desc = 0.10
+                else:
+                    desc = 0.0
+                total = subtotal * (1 - desc)
+                if cineco == "si":
+                    total *= 0.90
+                valor_pagar = f"${total:,.2f}"
+                mensaje = f"Listo {nombre}. Compra procesada."
+        else:
+            mensaje = "Revisa los campos, hay errores."
+    return render_template('cinepolis.html',form=form,valor_pagar=valor_pagar,mensaje=mensaje)
+
+
 if __name__ == '__main__':
-    csfr.init_app(app)
     app.run(debug=True)
     
     
