@@ -1,12 +1,69 @@
-{% macro datos(name,placeholder,type="text") %}
+{% macro datos(name, placeholder, type="text") %}
 <div class="mb-3">
-    <label for="{{name}}" class="form-label">{{name}}</label>
-    <input type="{{type}}" class="form-control" id="{{name}}" name="{{name}}" 
-    placeholder="{{placeholder}}">
+  <label for="{{ name }}" class="form-label">{{ name }}</label>
+  <input type="{{ type }}" class="form-control" id="{{ name }}" name="{{ name }}"
+         placeholder="{{ placeholder }}">
 </div>
-
-{%endmacro%}
-
+{% endmacro %}
 
 
+{% macro camposNuevos(field, kwargs={}) %}
+<div class="mb-3">
+    {{ field.label(class="form-label") }}
+    {{ field(**kwargs) | safe }}
 
+    {% if field.errors %}
+    <ul class="text-danger">
+        {% for error in field.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro cine(field, placeholder="", type="text") %}
+<div class="row mb-3 align-items-center">
+  <div class="col-md-5">
+    <label class="form-label fw-semibold mb-0">{{ field.label.text }}</label>
+  </div>
+  <div class="col-md-7">
+    {{ field(class="form-control", placeholder=placeholder, type=type) }}
+    {% if field.errors %}
+      <div class="text-danger small mt-1">
+        {% for e in field.errors %}
+          <div>{{ e }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+
+{% macro cine_radio(field) %}
+<div class="row mb-3 align-items-center">
+  <div class="col-md-5">
+    <label class="form-label fw-semibold mb-0">{{ field.label.text }}</label>
+  </div>
+
+  <div class="col-md-7">
+    <div class="d-flex gap-4">
+      {% for sub in field %}
+        <div class="form-check">
+          {{ sub(class="form-check-input") }}
+          <label class="form-check-label">{{ sub.label.text }}</label>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if field.errors %}
+      <div class="text-danger small mt-1">
+        {% for e in field.errors %}
+          <div>{{ e }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}

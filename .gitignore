@@ -39,3 +39,7 @@ Thumbs.db
 # ZIPs / builds
 # ======================
 *.zip
+
+app.py
+forms.py
+templates/cinepolis.html
